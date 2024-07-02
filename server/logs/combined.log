@@ -11,3 +11,20 @@
 2024-06-26 02:04:16 [33mwarn[39m: Invalid password
 2024-06-26 02:05:17 [32minfo[39m: Checking if user is registered with email: rajg@gmail.com
 2024-06-26 02:05:17 [31merror[39m: Invalid password
+2024-07-02 12:18:27 [33mwarn[39m: User.findOne({ '$or': [ { username: 'suhana' }, { email: 'suhana158@gmail.com' } ] })
+2024-07-02 12:20:21 [33mwarn[39m: User.findOne({ '$or': [ { username: 'suhana' }, { email: 'suhana158@gmail.com' } ] })
+2024-07-02 12:23:05 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:06 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:07 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:08 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:08 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:08 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:08 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:10 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:10 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:10 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:10 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:10 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:11 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:23:11 [33mwarn[39m: user with this email or username is already registered
+2024-07-02 12:45:25 [33mwarn[39m: user with this email or username is already registered

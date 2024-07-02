@@ -1,23 +1,61 @@
 import bcrypt from "bcrypt";
 import { User } from "../model/User.model.js";
 import logger from "../logger.js";
+import { ApiError } from "../utils/ApiError.js";
 
-export const registerUser = async (name, email, password) => {
-    // Check if user already exists
-    logger.info(`Checking if user already exists with email: ${email}`);
-    const existedUser = await User.findOne({ email });
+
+
+const generateAccessAndRefreshToken = async function(userId){
+    try {
+        const user = await User.findById(userId);
+        const accessToken = await user.generateAccessToken();
+        const refreshToken = await user.generateRefreshToken();
+
+        user.refreshToken = refreshToken;
+        await user.save({validateBeforeSave: false });
+
+        return {accessToken, refreshToken};
+    } catch (error) {
+        throw new ApiError(500, "Something went wrong while generating refresh and access token");
+        
+    }
+}
+
+
+export const registerUser = async (username, email, password) => {
+    if ([username, email, password].some((field) => field?.trim() === "")) {
+        throw new ApiError(400, "All fields are required");
+    }
+
+    const existedUser = await User.findOne({
+        $or: [{ username }, { email }]
+    });
+
     if (existedUser) {
-        logger.warn(`User already exists with email: ${email}`);
-        throw new Error("User already exists.");
+        logger.warn(`user with this email or username is already registered`);
+        throw new ApiError(409, "User with username or email already exists");
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user
-    const user = await User.create({ name, email, password: hashedPassword });
+    const user = await User.create({
+        username: username.toLowerCase(),
+        email,
+        password
+    });
 
-    return user;
+    const createdUser = await User.findById(user._id).select(
+        "-password -refreshToken"
+    );
+
+    if (!createdUser) {
+        logger.error("Something went wrong while registering the user");
+        throw new ApiError(500, "Something went wrong while registering the user");
+    }
+
+    return createdUser;
+
 };
 
 export const loginUser = async (email, password) => {
