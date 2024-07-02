@@ -1,0 +1,13 @@
+2024-06-12 15:58:09 [32minfo[39m: Checking if user already exists with email: tanishk@gmail.com
+2024-06-12 15:58:43 [32minfo[39m: Checking if user already exists with email: tanishk@gmail.com
+2024-06-12 15:58:43 [33mwarn[39m: User already exists with email: tanishk@gmail.com
+2024-06-12 15:59:40 [32minfo[39m: Checking if user is registered with email: tanishk@gmail.com
+2024-06-12 16:00:47 [32minfo[39m: Checking if user is registered with email: tanishk@gmail.com
+2024-06-12 16:00:47 [32minfo[39m: user found with email: tanishk@gmail.com
+2024-06-26 02:02:17 [32minfo[39m: Checking if user already exists with email: rajg33182@gmail.com
+2024-06-26 02:02:17 [33mwarn[39m: User already exists with email: rajg33182@gmail.com
+2024-06-26 02:04:05 [32minfo[39m: Checking if user already exists with email: rajg@gmail.com
+2024-06-26 02:04:16 [32minfo[39m: Checking if user is registered with email: rajg@gmail.com
+2024-06-26 02:04:16 [33mwarn[39m: Invalid password
+2024-06-26 02:05:17 [32minfo[39m: Checking if user is registered with email: rajg@gmail.com
+2024-06-26 02:05:17 [31merror[39m: Invalid password
