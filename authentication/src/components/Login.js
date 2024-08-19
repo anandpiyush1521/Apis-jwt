@@ -25,8 +25,8 @@ const Login = () => {
 
     if (!input.password.trim()) {
       validationError.password = "Password is required";
-    } else if (input.password.length < 9) {
-      validationError.password = "Invalid password";
+    } else if (input.password.length < 5) {
+      validationError.password = "Password must be at least 9 characters long";
     }
 
     setError(validationError);
@@ -35,8 +35,6 @@ const Login = () => {
       try {
         const response = await axios.post("http://localhost:3001/login", input);
         if (response.status === 200) {
-          const {token} = response.data;
-          localStorage.setItem("token", token);
           navigate("/confirm");
           alert("User logged in successfully");
         }

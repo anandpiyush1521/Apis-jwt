@@ -15,7 +15,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/confirm" element={<ProtectedRoute Component={Confirm} />} />
+          <Route path="/confirm" element={<Confirm />} />
+          {/* <Route path="/confirm" element={<ProtectedRoute Component={Confirm} />} /> */}
         </Routes>
       </BrowserRouter>
     </>

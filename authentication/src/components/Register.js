@@ -7,7 +7,7 @@ import PageTitle from "./PageTitle";
 const Register = () => {
   const navigate = useNavigate();
   const [input, setInput] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -18,8 +18,8 @@ const Register = () => {
     e.preventDefault();
     const validationError = {};
 
-    if (!input.name.trim()) {
-      validationError.name = "Name is required";
+    if (!input.username.trim()) {
+      validationError.username = "Username is required";
     }
     if (!input.email.trim()) {
       validationError.email = "Email is required";
@@ -29,7 +29,7 @@ const Register = () => {
 
     if (!input.password.trim()) {
       validationError.password = "Password is required";
-    } else if (input.password.length < 9) {
+    } else if (input.password.length < 5) {
       validationError.password = "Password must be at least 9 characters long";
     }
 
@@ -41,7 +41,7 @@ const Register = () => {
           "http://localhost:3001/register",
           input
         );
-        if (response.status === 200) {
+        if (response.status === 201) { // 201 is the typical status code for successful creation
           navigate("/login");
           alert("User registered successfully");
         }
@@ -70,8 +70,8 @@ const Register = () => {
 
         <div className="form-floating mb-3">
           <input
-            name="name"
-            value={input.name}
+            name="username"
+            value={input.username}
             onChange={(e) =>
               setInput({
                 ...input,
@@ -81,10 +81,10 @@ const Register = () => {
             type="text"
             className="form-control"
             id="floatingInputName"
-            placeholder="Name"
+            placeholder="Username"
           />
-          {error.name && <span className="error">{error.name}</span>}
-          <label htmlFor="floatingInputName">Enter name</label>
+          {error.username && <span className="error">{error.username}</span>}
+          <label htmlFor="floatingInputName">Enter username</label>
         </div>
 
         <div className="form-floating mb-3">

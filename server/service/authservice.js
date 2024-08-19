@@ -1,8 +1,7 @@
 import bcrypt from "bcrypt";
-import { User } from "../model/User.model.js";
 import logger from "../logger.js";
 import { ApiError } from "../utils/ApiError.js";
-
+import { User } from "../model/User.model.js";
 
 
 const generateAccessAndRefreshToken = async function(userId){
@@ -16,6 +15,7 @@ const generateAccessAndRefreshToken = async function(userId){
 
         return {accessToken, refreshToken};
     } catch (error) {
+        logger.warn(error);
         throw new ApiError(500, "Something went wrong while generating refresh and access token");
         
     }
@@ -23,6 +23,14 @@ const generateAccessAndRefreshToken = async function(userId){
 
 
 export const registerUser = async (username, email, password) => {
+    // get user details from frontend
+    // validation - not empty
+    // check if user already exists: username, email
+    // create user object - create entry in db
+    // remove password and refresh token field from response
+    // check for user creation
+    // return res
+    
     if ([username, email, password].some((field) => field?.trim() === "")) {
         throw new ApiError(400, "All fields are required");
     }
@@ -40,7 +48,7 @@ export const registerUser = async (username, email, password) => {
     // const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
-        username: username.toLowerCase(),
+        username,
         email,
         password
     });
@@ -59,23 +67,36 @@ export const registerUser = async (username, email, password) => {
 };
 
 export const loginUser = async (email, password) => {
-    // Check if user is registered or not using email
-    logger.info(`Checking if user is registered with email: ${email}`);
-    const user = await User.findOne({ email });
-    if (!user) {
-        logger.warn(`User not found with email: ${email}`);
-        throw new Error("User not found");
+    if (!email) {
+        logger.warn("email is required");
+        throw new ApiError(400, "Username or email is required");
     }
 
-    // Check if password is valid or not
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-        logger.error("Invalid password")
-        throw new Error("Invalid password");
+    const user = await User.findOne({email: email});
+
+    if (!user) {
+        logger.error(`${user} does not exist`);
+        throw new ApiError(400, "User does not exist");
     }
-    logger.info(`user found with email: ${email}`)
-    return user;
+
+    //check password is correct or not
+    const isPasswordValid = await user.isPasswordCorrect(password);
+    
+    if (!isPasswordValid) {
+        logger.error("Invalid User Credentials");
+        throw new ApiError(400, "Invalid User Credentials");
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id); // Use await
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
+
+    if(loggedInUser){
+        logger.info("User logged in successfully");
+    }
+
+    return { loggedInUser, accessToken, refreshToken };
 };
+
 
 export const getUser = async (email) => {
     const user = await User.findOne({ email });

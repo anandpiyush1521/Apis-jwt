@@ -1,17 +1,23 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import { User } from "./model/User.model.js"; // Updated import to match the correct path and file extension
-import bcrypt from "bcrypt";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
-import {deleteUsers, fetchAllUser, fetchUser, login, register, update } from "./controllers/authcontroller.js";
+import {deleteUsers, fetchAllUser, fetchUser, getCurrentUser, login, register, update } from "./controllers/authcontroller.js";
+import { verifyJWT } from "./middlewares/authMiddleware.js";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
+
+app.use(cookieParser()); // Add this middleware
+app.use(cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true
+}));
 
 // mongoose.connect(process.env.MONGO_URI) // Using IPv4 address explicitly
 //     .then(() => console.log("Connected to MongoDB"))
@@ -33,6 +39,7 @@ app.get("/fetchuser", fetchUser)
 app.put("/update", update)
 app.delete("/delete", deleteUsers)
 app.get("/findall", fetchAllUser)
+app.get("/me", verifyJWT, getCurrentUser)
 
 
 
